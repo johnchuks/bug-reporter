@@ -8,8 +8,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/johnchuks/bug-reporter/models"
-	"github.com/johnchuks/bug-reporter/responses"
+	"github.com/johnchuks/feature-reporter/models"
+	"github.com/johnchuks/feature-reporter/responses"
 )
 
 type App struct {

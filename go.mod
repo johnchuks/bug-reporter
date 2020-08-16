@@ -1,4 +1,4 @@
-module github.com/johnchuks/bug-reporter
+module github.com/johnchuks/feature-reporter
 
 go 1.15
 

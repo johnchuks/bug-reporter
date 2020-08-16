@@ -3,9 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
-	"github.com/johnchuks/bug-reporter/responses"
+	"github.com/johnchuks/feature-reporter/responses"
 	"io/ioutil"
-	"github.com/johnchuks/bug-reporter/models"
+	"github.com/johnchuks/feature-reporter/models"
 )
 
 // CreateReport handles creating a new bug report

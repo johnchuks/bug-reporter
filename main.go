@@ -1,10 +1,11 @@
 package main
 
 import (
-	"os"
 	"fmt"
 	"log"
-	"github.com/johnchuks/bug-reporter/controllers"
+	"os"
+
+	"github.com/johnchuks/feature-reporter/controllers"
 	"github.com/joho/godotenv"
 )
 
