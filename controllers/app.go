@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/johnchuks/feature-reporter/middlewares"
 	"net/http"
 	"fmt"
 	"log"
@@ -10,12 +11,16 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/johnchuks/feature-reporter/models"
 	"github.com/johnchuks/feature-reporter/responses"
+	"github.com/slack-go/slack"
 )
 
 type App struct {
 	Router *mux.Router
 	DB *gorm.DB
+	SlackVerificationToken string
+	SlackClient *slack.Client
 }
+
 
 func (a *App) Initialize(host, port, user, password, dbname string) {
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", 
@@ -39,8 +44,9 @@ func (a *App) Initialize(host, port, user, password, dbname string) {
 }
 
 func (a *App) intializeRoutes() {
-	a.Router.Use()
+	a.Router.Use(middlewares.SetContentTypeMiddleware)
 	a.Router.HandleFunc("/", home).Methods("GET")
+	a.Router.HandleFunc("/api/report", a.CreateReport).Methods("POST")
 }
 
 func (a *App) Run(port string) {
