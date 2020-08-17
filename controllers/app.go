@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/postgres" //postgres
 	"github.com/johnchuks/feature-reporter/models"
 	"github.com/johnchuks/feature-reporter/responses"
 	"github.com/slack-go/slack"
