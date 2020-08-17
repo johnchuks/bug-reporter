@@ -11,15 +11,14 @@ type Report struct {
 	gorm.Model
 	Title string `gorm:"type:varchar(100);not null;unique" json:"title"`
 	Description string `gorm:"not null" json:"description"`
-	Screenshot string `gorm:"size:255;" json:"screenshot"`
-	UserID uint `gorm:"not null"  json:"user_id"`
+	Slackname string `gorm:"not null"  json:"slackName"`
 }
 
 // Strip removes any whitespaces from the user inputs
 func (r *Report) Strip() {
 	r.Title = strings.TrimSpace(r.Title)
 	r.Description = strings.TrimSpace(r.Description)
-	r.Screenshot = strings.TrimSpace(r.Screenshot)
+	r.Slackname = strings.TrimSpace(r.Slackname)
 }
 
 
@@ -41,7 +40,7 @@ func (r *Report) Update(id int, db *gorm.DB) (*Report, error) {
 	report := &Report{
 		Title: r.Title,
 		Description: r.Description,
-		Screenshot: r.Screenshot,
+		Slackname: r.Slackname,
 	}
 	err = db.Debug().Table("reports").Where("id = ?", id).Updates(report).Error
 

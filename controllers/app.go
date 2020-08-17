@@ -46,7 +46,7 @@ func (a *App) Initialize(host, port, user, password, dbname string) {
 func (a *App) intializeRoutes() {
 	a.Router.Use(middlewares.SetContentTypeMiddleware)
 	a.Router.HandleFunc("/", home).Methods("GET")
-	a.Router.HandleFunc("/api/report", a.CreateReport).Methods("POST")
+	a.Router.HandleFunc("/event/feature", a.SlackHandler).Methods("POST")
 }
 
 func (a *App) Run(port string) {
