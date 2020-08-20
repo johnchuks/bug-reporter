@@ -9,7 +9,7 @@ import (
 type Report struct {
 
 	gorm.Model
-	Title string `gorm:"type:varchar(100);not null;unique" json:"title"`
+	Title string `gorm:"type:varchar(100);not null" json:"title"`
 	Description string `gorm:"not null" json:"description"`
 	Slackname string `gorm:"not null"  json:"slackName"`
 }

@@ -14,6 +14,7 @@ import (
 	"github.com/slack-go/slack"
 )
 
+// App struct definition for the app context
 type App struct {
 	Router *mux.Router
 	DB *gorm.DB
@@ -21,7 +22,7 @@ type App struct {
 	SlackClient *slack.Client
 }
 
-
+// Initialize creates a database connection and initializes the app as well
 func (a *App) Initialize(host, port, user, password, dbname string) {
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", 
 		host, port, user, dbname, password)
@@ -47,8 +48,10 @@ func (a *App) intializeRoutes() {
 	a.Router.Use(middlewares.SetContentTypeMiddleware)
 	a.Router.HandleFunc("/", home).Methods("GET")
 	a.Router.HandleFunc("/event/feature", a.SlackHandler).Methods("POST")
+	a.Router.HandleFunc("/api/reports", a.CreateReport).Methods("POST")
 }
 
+// Run starts up the Go server
 func (a *App) Run(port string) {
 	log.Printf("\nServer starting on port %s", port)
 	log.Fatal(http.ListenAndServe(port, a.Router))
