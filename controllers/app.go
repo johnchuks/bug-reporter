@@ -37,7 +37,7 @@ func (a *App) Initialize(host, port, user, password, dbname string) {
 		log.Printf("Successfully connected to database %s", dbname)
 	}
 
-	a.DB.Debug().AutoMigrate(&models.Report{}) // database migration
+	a.DB.Debug().AutoMigrate(&models.Report{}, &models.User{}) // database migration
 	
 	a.Router = mux.NewRouter().StrictSlash(true)
 	a.intializeRoutes()
@@ -49,6 +49,8 @@ func (a *App) intializeRoutes() {
 	a.Router.HandleFunc("/", home).Methods("GET")
 	a.Router.HandleFunc("/event/feature", a.SlackHandler).Methods("POST")
 	a.Router.HandleFunc("/api/reports", a.CreateReport).Methods("POST")
+	a.Router.HandleFunc("/api/report/{id:[0-9]+}", a.GetReport).Methods("GET")
+	a.Router.HandleFunc("/api/signup", a.SignUp).Methods("POST")
 }
 
 // Run starts up the Go server

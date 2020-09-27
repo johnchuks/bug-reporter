@@ -9,9 +9,12 @@ import (
 type Report struct {
 
 	gorm.Model
+	UserID uint
+	User User
 	Title string `gorm:"type:varchar(100);not null" json:"title"`
 	Description string `gorm:"not null" json:"description"`
 	Slackname string `gorm:"not null"  json:"slackName"`
+
 }
 
 // Strip removes any whitespaces from the user inputs
