@@ -1,6 +1,7 @@
 package models
 
 import (
+	"strings"
 	"log"
 	"github.com/jinzhu/gorm"
 	"errors"
@@ -70,10 +71,6 @@ var validate *validator.Validate
 
 // BeforeCreate hook for checking if data is valid before saving it
 func (u *User) BeforeCreate() (err error) {
-	if !u.IsValid() {
-	  err = errors.New("can't save invalid data")
-	  return err
-	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Fatal(err)
@@ -83,11 +80,26 @@ func (u *User) BeforeCreate() (err error) {
 	return
 }
 
-// IsValid checks if the user input is valid before saving it
-func (u *User) IsValid() bool {
-	err := validate.Struct(u)
+// CheckInput checks if the user input is valid before saving it
+func (u *User) CheckInput() (err error) {
+	err = validate.Struct(u)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *User) checkPassword(password string) (isPasswordValid bool) {
+	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password)); err != nil {
 		return false
 	}
 	return true
+}
+
+// Strip removes all whitespaces from the request body
+func (u *User) Strip() {
+	u.FirstName = strings.TrimSpace(u.FirstName)
+	u.LastName = strings.TrimSpace(u.LastName)
+	u.UserName = strings.TrimSpace(u.UserName)
+	u.Password = strings.TrimSpace(u.Password)
 }

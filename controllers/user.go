@@ -24,6 +24,13 @@ func (a *App) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user.Strip()
+	err = user.CheckInput()
+	if err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
+
 	newUser, err := user.Create(a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
