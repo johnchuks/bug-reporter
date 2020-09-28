@@ -18,6 +18,12 @@ type User struct {
 	Password string `gorm:"type:varchar(100);not null" validate:"required" json:"password"`
 }
 
+// LoginPayload Definition
+type LoginPayload struct {
+	UserName string `validate:"required"`
+	Password string `validate:"required"`
+}
+
 // Create a new user object
 func (u *User) Create(db *gorm.DB) (*User, error) {
 	var err error
@@ -102,4 +108,24 @@ func (u *User) Strip() {
 	u.LastName = strings.TrimSpace(u.LastName)
 	u.UserName = strings.TrimSpace(u.UserName)
 	u.Password = strings.TrimSpace(u.Password)
+}
+
+// StripPassword returns a user struct without its password field
+func (u *User) StripPassword() (*User) {
+	return &User{
+		FirstName: u.FirstName,
+		LastName: u.LastName,
+		UserName: u.UserName,
+	}
+}
+
+// Validate validates the login data
+func (l *LoginPayload) Validate() (error) {
+	l.UserName = strings.TrimSpace(l.UserName)
+	l.Password = strings.TrimSpace(l.Password)
+	err := validate.Struct(l)
+	if err != nil {
+		return err
+	}
+	return nil
 }

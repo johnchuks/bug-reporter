@@ -36,6 +36,24 @@ func (a *App) SignUp(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
-	responses.JSON(w, http.StatusCreated, newUser)
+	responses.JSON(w, http.StatusCreated, newUser.StripPassword())
 	return
+}
+
+
+func (a *App) Login(w http.ResponseWriter, r *http.Request) {
+	user := &models.User{}
+	login := &models.LoginPayload{}
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
+
+	err = json.Unmarshal(reqBody, login)
+
+	if err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
 }
