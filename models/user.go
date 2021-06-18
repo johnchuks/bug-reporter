@@ -4,7 +4,7 @@ import (
 	"strings"
 	"log"
 	"github.com/jinzhu/gorm"
-	"errors"
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -28,6 +28,8 @@ type LoginPayload struct {
 func (u *User) Create(db *gorm.DB) (*User, error) {
 	var err error
 	err = db.Debug().Create(&u).Error
+
+	fmt.Println("User was created successfully!")
 
 	if err != nil {
 		return &User{}, err
